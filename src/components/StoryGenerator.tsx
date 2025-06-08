@@ -2,112 +2,65 @@ import { useState } from 'react';
 import { TextField, Button, Paper, Typography, CircularProgress, Box } from '@mui/material';
 import OpenAI from 'openai';
 
+// TODO: Define the Story interface
+// HINT: Think about what properties a story should have
+// - What information do we need to store for each story?
+// - Each property should be of type string
+// - Look at the UI section to see what story properties are displayed
 interface Story {
-  characters: string;
-  setting: string;
-  plot: string;
+  // Add the required properties here
 }
 
 const StoryGenerator = () => {
-  const [prompt, setPrompt] = useState('');
-  const [story, setStory] = useState<Story | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  // TODO: Set up state variables using useState
+  // HINT: You'll need state for:
+  // - prompt (string) - to store user input
+  // - story (Story | null) - to store the generated story
+  // - loading (boolean) - to track API call status
+  // - error (string) - to store error messages
+  // Remember to use the correct type annotations!
+  // Add your state variables here
 
+  // TODO: Implement the generateStory function
+  // HINT: This function should:
+  // 1. Validate the prompt (check if it's empty)
+  // 2. Set loading to true before API call
+  // 3. Create an OpenAI client with your API key
+  // 4. Make the API call with appropriate parameters:
+  //    - Use chat.completions.create()
+  //    - Set up system and user messages
+  //    - Request JSON response format
+  // 5. Parse the JSON response
+  // 6. Update the story state with the parsed content
+  // 7. Handle any errors that occur
+  // 8. Set loading to false when done
   const generateStory = async () => {
-    if (!prompt) {
-      setError('Please enter a prompt');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const openai = new OpenAI({
-        apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-        dangerouslyAllowBrowser: true
-      });
-
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [{
-          role: "system",
-          content: "You are a creative story generator. Generate a story with distinct sections for characters, setting, and plot. Return only valid JSON without any markdown formatting."
-        }, {
-          role: "user",
-          content: `Generate a story based on this prompt: ${prompt}. Return only the following JSON structure without any markdown: {"characters": "description of characters", "setting": "description of setting", "plot": "description of plot"}`
-        }],
-      });
-
-      let storyContent;
-      try {
-        const content = response.choices[0].message.content || '';
-        // Remove any potential markdown formatting
-        const cleanContent = content.replace(/^```json\s*|\s*```$/g, '').trim();
-        storyContent = JSON.parse(cleanContent);
-      } catch (err) {
-        setError('Failed to parse story content. Please try again.');
-        console.error(err);
-        return;
-      }
-
-      setStory(storyContent);
-      
-      // Read the story aloud
-      const speech = new SpeechSynthesisUtterance();
-      speech.text = `Characters: ${storyContent.characters}. Setting: ${storyContent.setting}. Plot: ${storyContent.plot}`;
-      window.speechSynthesis.speak(speech);
-    } catch (err) {
-      setError('Failed to generate story. Please try again.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    // Your implementation here
   };
 
+  // TODO: Implement the text-to-speech feature
+  // HINT: Use the Web Speech API
+  // 1. Create a new SpeechSynthesisUtterance
+  // 2. Set the text to read (combine all story parts)
+  // 3. Use window.speechSynthesis.speak()
+  const readStoryAloud = (storyContent: Story) => {
+    // Your implementation here
+  };
+
+  // TODO: Create the UI components
+  // HINT: Use these Material-UI components:
+  // - Typography for headings and text
+  // - TextField for the prompt input
+  // - Button for the generate action
+  // - CircularProgress for loading state
+  // - Paper for the story display
+  // Remember to:
+  // 1. Handle loading state in the button
+  // 2. Display error messages when present
+  // 3. Only show the story section when a story exists
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        AI Story Generator
-      </Typography>
-      
-      <TextField
-        fullWidth
-        label="Enter your story prompt"
-        variant="outlined"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        margin="normal"
-      />
-      
-      <Button
-        variant="contained"
-        onClick={generateStory}
-        disabled={loading}
-        sx={{ my: 2 }}
-      >
-        {loading ? <CircularProgress size={24} /> : 'Generate Story'}
-      </Button>
-
-      {error && (
-        <Typography color="error" sx={{ my: 2 }}>
-          {error}
-        </Typography>
-      )}
-
-      {story && (
-        <Paper sx={{ p: 3, mt: 3 }}>
-          <Typography variant="h6" gutterBottom>Characters:</Typography>
-          <Typography paragraph>{story.characters}</Typography>
-          
-          <Typography variant="h6" gutterBottom>Setting:</Typography>
-          <Typography paragraph>{story.setting}</Typography>
-          
-          <Typography variant="h6" gutterBottom>Plot:</Typography>
-          <Typography paragraph>{story.plot}</Typography>
-        </Paper>
-      )}
+      {/* Add your UI components here */}
     </Box>
   );
 };
