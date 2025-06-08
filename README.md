@@ -31,60 +31,9 @@ git push -u origin main
 base: "/[REPO_NAME]/"
 ```
 
-#### 04. Create ./github/workflows/deploy.yml and add the code bellow
+#### 04. Create ./github/workflows/deploy.yml
 > [!WARNING]
-> It is crucial that the `.yml` file has the exact code below. Any typing or spacing errors may cause deployment issues.
-```yml
-name: Deploy
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-
-      - name: Build project
-        run: npm run build
-
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v3
-        with:
-          name: production-files
-          path: ./dist
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: production-files
-          path: ./dist
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-```
+> Create the file at `.github/workflows/deploy.yml` in your repository. The workflow file must be precise - check the [workflow file in this repository](https://github.com/ErickKS/vite-deploy/blob/main/.github/workflows/deploy.yml) for reference.
 
 #### 05. Push to GitHub
 ```git
