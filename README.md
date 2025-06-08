@@ -101,7 +101,7 @@ Config > Actions > General > Workflow permissions > Read and Write permissions
 Actions > failed deploy > re-run-job failed jobs 
 ```
 ```
-Pages > gh-pages > save
+Settings > Pages > Build and deployment > Source > Select "GitHub Actions"
 ```
 
 #### 07. Set up OpenAI API Key
