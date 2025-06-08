@@ -104,6 +104,19 @@ Actions > failed deploy > re-run-job failed jobs
 Pages > gh-pages > save
 ```
 
+#### 07. Set up OpenAI API Key
+To securely use the OpenAI API in your deployment:
+
+1. Go to your GitHub repository
+2. Click on "Settings" tab
+3. In the left sidebar, click on "Secrets and variables" → "Actions"
+4. Click "New repository secret"
+5. Name: `OPENAI_API_KEY`
+6. Value: Your OpenAI API key
+7. Click "Add secret"
+
+The API key will be automatically available in your application as `VITE_OPENAI_API_KEY`.
+
 ## 🛠 Helper
 
 #### > For code changes
